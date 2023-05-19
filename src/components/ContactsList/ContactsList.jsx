@@ -1,25 +1,32 @@
-import { Component } from 'react';
+import React from 'react';
+import ContactsListElement from '../ContactslistElement/ContactsListElement';
 import css from './ContactsList.module.css';
 import PropTypes from 'prop-types';
 
-class ContactsList extends Component {
-  render() {
-    const { contactsLength, children } = this.props;
-
-    return (
-      <div className={css.contactsListBox}>
-        <h4>
-          You have {contactsLength} contact{contactsLength === 1 ? null : 's'}
-        </h4>
-        <ul className={css.contactsList}>{children}</ul>
-      </div>
-    );
-  }
-}
+const ContactsList = ({ contactsLength, contacts, deleteContact }) => {
+  return (
+    <div className={css.contactsListBox}>
+      <h4>
+        You have {contactsLength} contact{contactsLength === 1 ? null : 's'}
+      </h4>
+      <ul className={css.contactsList}>
+        {contacts.map(({ id, name, number }) => (
+          <ContactsListElement
+            key={id}
+            name={name}
+            number={number}
+            deleteContact={() => deleteContact(id)}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 ContactsList.propTypes = {
-  children: PropTypes.node,
+  contacts: PropTypes.array,
   contactsLength: PropTypes.number,
+  deleteContact: PropTypes.func,
 };
 
 export default ContactsList;
